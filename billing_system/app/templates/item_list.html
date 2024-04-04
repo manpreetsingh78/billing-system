@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Item List</title>
+    <style>
+        
+        body {
+            padding:130px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        th.actions, td.actions {
+            width: 100px;
+        }
+
+        .actions a {
+            display: inline-block;
+            margin-right: 5px;
+            text-decoration: none;
+            color: #333;
+            padding: 5px 10px;
+            background-color: #f2f2f2;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .actions a:hover {
+            background-color: #e2e2e2;
+        }
+
+        .actions a.delete {
+            color: #f00;
+        }
+        .logout-btn {
+            float: right; /* Float the button to the right */
+            padding: 8px 20px;
+            background-color: #f44336; /* Red color */
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            text-decoration: none; /* Remove default link styling */
+            margin-bottom:10px
+        }
+
+        .logout-btn:hover {
+            background-color: #d32f2f; /* Darker red color on hover */
+        }
+        .btn-generate-bill {
+            padding: 8px 20px;
+            background-color: #007bff; /* Blue color */
+            color: white;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            text-decoration: none; /* Remove default link styling */
+            margin-bottom:10px
+        }
+
+        .btn-generate-bill:hover {
+            background-color: #0056b3; /* Darker blue color on hover */
+        }
+    </style>
+</head>
+<body>
+    <h1>Item List</h1>
+    <a href="{% url 'generate_bill' %}" class="btn-generate-bill">Generate Bill</a> <!-- Link to the generate_bill page -->
+
+    <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Description</th>
+                <th class="actions">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>INR {{ item.price }}</td>
+                <td>{{ item.description }}</td>
+                <td class="actions">
+                    <a href="{% url 'edit_item' item.pk %}">Edit</a>
+                    <a href="{% url 'delete_item' item.pk %}" class="delete">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'create_item' %}">Add New Item</a>
+</body>
+</html>

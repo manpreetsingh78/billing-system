@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bill Detail</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .invoice {
+            width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .invoice-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .invoice-table th,
+        .invoice-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .invoice-total {
+            text-align: right;
+        }
+
+        .invoice-total p {
+            margin: 5px 0;
+        }
+        .button-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .button-container button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #007bff; /* Blue color */
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .button-container button:hover {
+            background-color: #0056b3; /* Darker blue color on hover */
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="invoice">
+        <div class="invoice-header">
+            <h2>Invoice</h2>
+            <!-- Additional header information if needed -->
+        </div>
+        <table class="invoice-table">
+            <thead>
+                <tr>
+                    <th>Item Name</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in bill.items.all %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>INR {{ item.price }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="invoice-total">
+            <p>Total Cost: INR {{ bill.total_cost }}</p>
+            <!-- Additional total information if needed -->
+        </div>
+    </div>
+    <div class="button-container">
+        <button onclick="window.print()">Print</button>
+        <button onclick="goBack()">Go Back</button>
+    </div>
+    <script>
+        function goBack() {
+            window.location.href = "{% url 'generate_bill' %}";
+        }
+    </script>
+</body>
+</html>

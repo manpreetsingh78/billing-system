@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Generate Bill</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .generate-bill {
+            width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .generate-bill h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .generate-bill table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .generate-bill th,
+        .generate-bill td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .generate-bill th {
+            background-color: #f2f2f2;
+        }
+
+        .generate-bill button {
+            padding: 10px 20px;
+            background-color: #007bff; /* Blue color */
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            text-decoration: none; /* Remove default link styling */
+        }
+
+        .generate-bill button:hover {
+            background-color: #0056b3; /* Darker blue color on hover */
+        }
+        .goback {
+            margin-top:-35px;
+            float:right;
+            padding: 10px 20px;
+            background-color: #007bff; /* Blue color */
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            text-decoration: none; /* Remove default link styling */
+        }
+
+        .goback:hover {
+            background-color: #0056b3; /* Darker blue color on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="generate-bill">
+    <h1>Generate Bill</h1>
+    <form id="generate-bill-form" method="post">
+        {% csrf_token %}
+        <table>
+            <thead>
+                <tr>
+                    <th class="checkbox"><input type="checkbox" id="select-all"></th>
+                    <th>Item Name</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td class="checkbox"><input type="checkbox" name="items" value="{{ item.id }}"></td>
+                    <td>{{ item.name }}</td>
+                    <td>INR {{ item.price }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit">Generate Bill</button>
+    </form>
+    <button class="goback" onclick="goBack()">Go Back</button>
+</div>
+    <script>
+        function goBack() {
+            window.location.href = "{% url 'item_list' %}";
+        }
+    </script>
+    <script>
+        document.getElementById('generate-bill-form').addEventListener('submit', function(event) {
+            var checkboxes = document.querySelectorAll('input[type="checkbox"][name="items"]:checked');
+            if (checkboxes.length === 0) {
+                alert('Please select at least one item.');
+                event.preventDefault(); // Prevent form submission
+            }
+        });
+    </script>
+    <script>
+        document.getElementById('select-all').addEventListener('change', function() {
+            var checkboxes = document.querySelectorAll('input[type="checkbox"][name="items"]');
+            checkboxes.forEach(function(checkbox) {
+                checkbox.checked = this.checked;
+            }, this);
+        });
+
+        function selectItem(itemId) {
+            var checkbox = document.querySelector('input[type="checkbox"][value="' + itemId + '"]');
+            if (checkbox) {
+                checkbox.checked = !checkbox.checked;
+            }
+        }
+    </script>
+</body>
+</html>
